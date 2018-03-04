@@ -83,7 +83,7 @@ Plaan
 Kasutatav tehnoloogia
 ----------------------
 
-Android rakendus
+Android rakendus +
 Spring raamistikuga server
 
 
