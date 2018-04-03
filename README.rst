@@ -25,6 +25,20 @@ Funktsionaalsus
     - Pööning
     - BitStop
     - Drumsticks?
+    
+Üldine struktuur kuidas java programmid väljastavad andmeid:
+ArrayList<HashMap>
+[    
+    {
+    provider="söögikoht";
+    name="toidu nimi";
+    name-eng="nimi inglise keeles";
+    price= "hind";
+    },
+    {
+    ...
+    }
+]
 
 **Rakendus**
 
