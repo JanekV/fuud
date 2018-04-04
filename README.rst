@@ -31,8 +31,8 @@ ArrayList<HashMap>
 [    
     {
     provider="söögikoht";
-    name="toidu nimi";
-    name-eng="nimi inglise keeles";
+    name_est="toidu nimi";
+    name_eng="nimi inglise keeles";
     price= "hind";
     },
     {
