@@ -15,10 +15,12 @@ import com.google.api.services.sheets.v4.model.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Quickstart {
+    private static final String BITSTOP_SPREADSHEET_ID = "1EWuafdBZjeBNwSNfluILEpT8JamxiPls9aBthYOY5UY";
+
+
     /**
      * Application name.
      */
@@ -54,7 +56,7 @@ public class Quickstart {
      * at ~/.credentials/sheets.googleapis.com-java-quickstart
      */
     private static final List<String> SCOPES =
-            Arrays.asList(SheetsScopes.SPREADSHEETS_READONLY);
+            Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
 
     static {
         try {
@@ -70,9 +72,9 @@ public class Quickstart {
      * Creates an authorized Credential object.
      *
      * @return an authorized Credential object.
-     * @throws IOException
+     * @throws IOException connection error
      */
-    public static Credential authorize() throws IOException {
+    private static Credential authorize() throws IOException {
         // Load client secrets.
         InputStream in =
                 Quickstart.class.getResourceAsStream("/client_secret.json");
@@ -97,9 +99,9 @@ public class Quickstart {
      * Build and return an authorized Sheets API client service.
      *
      * @return an authorized Sheets API client service
-     * @throws IOException
+     * @throws IOException connection error
      */
-    public static Sheets getSheetsService() throws IOException {
+    private static Sheets getSheetsService() throws IOException {
         Credential credential = authorize();
         return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                 .setApplicationName(APPLICATION_NAME)
@@ -107,26 +109,96 @@ public class Quickstart {
     }
 
     public static void main(String[] args) throws IOException {
+        // System.out.println(getBitStopDataList());
+        System.out.println(getBitStopDataList());
+    }
+
+
+    /**
+     * Returns food items form the bitStop Google Sheet in the correct format.
+     *
+     * @return List of HashMaps
+     * @throws IOException Failed to open Google Sheet
+     */
+    public static List<Map<String, String>> getBitStopDataList() throws IOException {
+        List<List<Object>> values = getSheetValues();
+
+        if (values == null || values.size() == 0) {
+            System.out.println("No data found.");
+            return null;
+        } else {
+            return parseValuesList(values);
+        }
+    }
+
+    private static List<List<Object>> getSheetValues() throws IOException {
         // Build a new authorized API client service.
         Sheets service = getSheetsService();
 
-        // Prints the names and majors of students in a sample spreadsheet:
-        // https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-        String spreadsheetId = "1EWuafdBZjeBNwSNfluILEpT8JamxiPls9aBthYOY5UY";
-        String range = "ROHOAD!A2:C10";
+        // bitStop keeps their data in range "ROHOAD", row 1 containing unimportant header is excluded
+        String range = "ROHOAD!A2:C30";
         ValueRange response = service.spreadsheets().values()
-                .get(spreadsheetId, range)
+                .get(BITSTOP_SPREADSHEET_ID, range)
                 .execute();
-        List<List<Object>> values = response.getValues();
-        if (values == null || values.size() == 0) {
-            System.out.println("No data found.");
-        } else {
-            for (List row : values) {
-                // Print columns A and E, which correspond to indices 0 and 4.
-                if (row.size() > 0) {
-                    System.out.printf("%s, %s, %s\n", row.get(0), row.get(2), row.get(1));
+
+        return response.getValues();
+    }
+
+    /**
+     * Return a List of HashMaps that follow the structure:
+     * [
+     *    provider: "provider name"
+     *    food_name_est: "string"
+     *    food_name_eng: "string"
+     *    price (single size): "string" (later parsed as float)
+     *    price (multiple sizes): "/big(string), /small(string)"
+     *  ]
+     *  [
+     *   ...
+     *  ]
+     *
+     * @param values values from bitStop Google Sheet
+     * @return list of HashMaps
+     */
+    private static List<Map<String, String>> parseValuesList(List<List<Object>> values) {
+        List<Map<String, String>> result = new ArrayList<>();
+        List tempBigPortionRow = null;
+        boolean isHalfPortion = false;
+
+        for (List row : values) {
+            if (row.size() > 0) {
+                if (!isHalfPortion) {
+                    if (row.get(0).toString().contains("/")) {
+                        isHalfPortion = true;
+                        tempBigPortionRow = row;
+                    } else {
+                        result.add(getRowAsHashMap(row));
+                    }
+                } else {
+                    result.add(getRowAsHashMap(tempBigPortionRow, row.get(1).toString()));
+                    isHalfPortion = false;
                 }
             }
         }
+        return result;
+    }
+
+    private static Map<String, String> getRowAsHashMap(List row, String smallPortionPrice) {
+        Map<String, String> result = new HashMap<>();
+        result.put("provider", "bitstop");
+        result.put("name_est", row.get(0).toString().split("/")[0].trim());
+        result.put("name_eng", row.get(2).toString().split("/")[0].trim());
+        result.put("price", String.format("/large %s, /small %s", row.get(1).toString().substring(1),
+                smallPortionPrice.substring(1)));
+        return result;
+    }
+
+    private static Map<String, String> getRowAsHashMap(List row) {
+        Map<String, String> result = new HashMap<>();
+        result.put("provider", "bitstop");
+        result.put("name_est", row.get(0).toString().trim());
+        result.put("name_eng", row.get(2).toString().trim());
+        result.put("price", row.get(1).toString().substring(1));
+        return result;
     }
 }
