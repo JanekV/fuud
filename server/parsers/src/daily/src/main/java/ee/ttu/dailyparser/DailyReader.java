@@ -27,12 +27,20 @@ public class DailyReader {
         menuToList();
     }
 
+    /**
+     * Method for splitting the menu into a linked list.
+     */
     private void menuToList() {
         LinkedList<String> list = new LinkedList<>();
+        //Splits the menu string into a linked list by new line.
         list.addAll(Arrays.asList(this.menu.split("\\r?\\n")));
         this.menuAsLinkedList = list;
     }
 
+    /**
+     * Getter method for menu as a linked list.
+     * @return menu as a linked list.
+     */
     public LinkedList<String> getMenuAsLinkedList() {
         return menuAsLinkedList;
     }

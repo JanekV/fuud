@@ -4,6 +4,8 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'application'
 
+mainClassName = 'ee.ttu.dailyparser.DailyMain'
+
 sourceCompatibility = 1.8
 
 repositories {
