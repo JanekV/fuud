@@ -110,12 +110,6 @@ public class BitStopParser {
                 .build();
     }
 
-    public static void main(String[] args) throws IOException {
-        // System.out.println(getBitStopDataList());
-        System.out.println(getBitStopDataList());
-    }
-
-
     /**
      * Returns food items form the bitStop Google Sheet in the correct format.
      *
