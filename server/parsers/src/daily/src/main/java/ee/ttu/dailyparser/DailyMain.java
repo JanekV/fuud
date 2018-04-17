@@ -31,7 +31,7 @@ public class DailyMain {
                 && new DailyDownloader(NELJAS_KORPUS_LINK, "neljas_korpus").download()) {
             return "Files downloaded!";
         } else {
-            return "Error, please investigate!";
+            return "Error, please investigate";
         }
     }
 
