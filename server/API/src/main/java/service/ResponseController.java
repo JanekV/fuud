@@ -23,7 +23,7 @@ public class ResponseController {
         }
     }
 
-    @RequestMapping("/daily")
+    @GetMapping("/daily")
     public FoodData daily() {
         try {
             return new FoodData(DailyMain.getMenuData());
