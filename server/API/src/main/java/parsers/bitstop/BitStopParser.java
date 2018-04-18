@@ -1,4 +1,4 @@
-package parsers;
+package parsers.bitstop;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -163,6 +163,7 @@ public class BitStopParser {
 
         for (List row : values) {
             if (row.size() > 0) {
+                if (row.get(0).toString().contains("HOMMIK") || row.get(0).toString().contains("SOOJAD")) continue;
                 if (!isHalfPortion) {
                     if (row.get(0).toString().contains("/")) {
                         isHalfPortion = true;
@@ -179,6 +180,16 @@ public class BitStopParser {
         return result;
     }
 
+
+    /**
+     * Alternative parser for small/big portion functionality. If a portion is big or small, "/väike" or "/small"
+     * is added to the name column in given row. This method gets the small portion price form the method
+     * ParseValuesList (see above).
+     *
+     * @param row row to be converted to hashmap
+     * @param smallPortionPrice big portion row
+     * @return HashMap
+     */
     private static Map<String, String> getRowAsHashMap(List row, String smallPortionPrice) {
         Map<String, String> result = new HashMap<>();
         result.put("provider", "bitstop");
