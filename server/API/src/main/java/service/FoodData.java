@@ -3,11 +3,11 @@ package service;
 import java.util.List;
 import java.util.Map;
 
-public class foodData {
+public class FoodData {
 
     private List<Map<String, String>> data;
 
-    public foodData(List<Map<String, String>> data) {
+    FoodData(List<Map<String, String>> data) {
         this.data = data;
     }
 
