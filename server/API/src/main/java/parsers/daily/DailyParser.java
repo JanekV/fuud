@@ -6,12 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DailyParser {
-    enum status {
-        OPEN, CLOSED
-    }
     private List<Map<String, String>> finalMenu;
     private List<String> menuToBeParsed;
-    private Map<String, String> providerStatus;
 
     /**
      * Constructor for parsing Daily menu in a linked list form.
@@ -43,14 +39,8 @@ public class DailyParser {
      * price - price of the dish.
      */
     private void parseMenu(String facility) {
-        // Sets establishment status to closed if the menu size is less than 2.
-        if (menuToBeParsed.size() < 2) {
-            setStatus(status.CLOSED, facility);
-            finalMenu.add(providerStatus);
-        } else {
-            // Converts the menu into a linked list of hashmaps and sets status to open.
-            setStatus(status.OPEN, facility);
-            finalMenu.add(providerStatus);
+        // Checks if the facility is open. If false, then the menu is an empty map.
+        if (checkIfOpen()) {
             //For loop converts every menu item into a hashmap, inserts them into a linked list.
             for (int i = 0; i < menuToBeParsed.size(); i += 2) {
                 Map<String, String> menuItem = new HashMap<>();
@@ -66,14 +56,11 @@ public class DailyParser {
     }
 
     /**
-     * Method for setting the open or closed status for the establishment.
-     * @param status open or closed as enum.
+     * If the menu size is larger than 2, the menu contains more lines than "Suletud".
+     * @return true if establishment is open, false if closed.
      */
-    private void setStatus(Enum status, String facility) {
-        Map<String, String> providerStatus = new HashMap<>();
-        providerStatus.put("provider", "daily_" + facility);
-        providerStatus.put("status", status.toString());
-        this.providerStatus = providerStatus;
+    private boolean checkIfOpen() {
+        return menuToBeParsed.size() > 2;
     }
 
 }
