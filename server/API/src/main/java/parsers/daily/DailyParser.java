@@ -6,21 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 public class DailyParser {
-    enum status {
-        OPEN, CLOSED
-    }
     private List<Map<String, String>> finalMenu;
     private List<String> menuToBeParsed;
-    private HashMap<String, String> providerStatus;
 
     /**
      * Constructor for parsing Daily menu in a linked list form.
      * @param splitMenu incoming menu as a linked list.
      */
-    DailyParser(LinkedList<String> splitMenu) {
+    DailyParser(List<String> splitMenu, String facility) {
         this.finalMenu = new LinkedList<>();
         this.menuToBeParsed = splitMenu;
-        parseMenu();
+        parseMenu(facility);
     }
 
     /**
@@ -42,21 +38,15 @@ public class DailyParser {
      * name_eng - name of the dish in English.
      * price - price of the dish.
      */
-    private void parseMenu() {
-        // Sets establishment status to closed if the menu size is less than 2.
-        if (menuToBeParsed.size() < 2) {
-            setStatus(status.CLOSED);
-            finalMenu.add(providerStatus);
-        } else {
-            // Converts the menu into a linked list of hashmaps and sets status to open.
-            setStatus(status.OPEN);
-            finalMenu.add(providerStatus);
+    private void parseMenu(String facility) {
+        // Checks if the facility is open. If false, then the menu is an empty map.
+        if (checkIfOpen()) {
             //For loop converts every menu item into a hashmap, inserts them into a linked list.
             for (int i = 0; i < menuToBeParsed.size(); i += 2) {
                 Map<String, String> menuItem = new HashMap<>();
                 String nameWithPrice = menuToBeParsed.get(i);
                 Integer priceBeginIndex = nameWithPrice.length() - 4;
-                menuItem.put("provider", "daily");
+                menuItem.put("provider", "daily_" + facility);
                 menuItem.put("name_est", nameWithPrice.substring(0, priceBeginIndex).trim());
                 menuItem.put("price", nameWithPrice.substring(priceBeginIndex));
                 menuItem.put("name_eng", menuToBeParsed.get(i + 1).trim());
@@ -66,14 +56,11 @@ public class DailyParser {
     }
 
     /**
-     * Method for setting the open or closed status for the establishment.
-     * @param status open or closed as enum.
+     * If the menu size is larger than 2, the menu contains more lines than "Suletud".
+     * @return true if establishment is open, false if closed.
      */
-    private void setStatus(Enum status) {
-        HashMap<String, String> providerStatus = new HashMap<>();
-        providerStatus.put("provider", "daily");
-        providerStatus.put("status", status.toString());
-        this.providerStatus = providerStatus;
+    private boolean checkIfOpen() {
+        return menuToBeParsed.size() > 2;
     }
 
 }

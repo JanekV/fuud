@@ -5,10 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import parsers.bitstop.BitStopParser;
-import parsers.daily.DailyReturnAllMenus;
+import parsers.daily.DailyMain;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 @CrossOrigin
 @RestController
@@ -24,10 +23,10 @@ public class ResponseController {
         }
     }
 
-    @RequestMapping("/daily_itmaja")
-    public FoodData dailyItMaja() {
+    @GetMapping("/daily")
+    public FoodData daily() {
         try {
-            return new FoodData(DailyReturnAllMenus.getDailyMenus());
+            return new FoodData(DailyMain.getMenuData());
         } catch (IOException e) {
             e.printStackTrace();
             return null;

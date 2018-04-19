@@ -45,3 +45,4 @@ public class DailyReader {
         return menuAsLinkedList;
     }
 }
+
