@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String BITSTOP_DATA = "192.162..:8080/bitstop";
+    public static final String BITSTOP_DATA = "http://192.168.43.210:8080/bitstop";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
@@ -62,18 +62,18 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray array = jsonObject.getJSONArray("data");
-
                             for (int i = 0; i < array.length(); i++) { // for each item (meal)
                                 JSONObject o = array.getJSONObject(i);
                                 ListItem item = new ListItem(           // get data about the meal
-                                        o.getString("provider"),
-                                        o.getString("name_eng")
+                                        o.getString("name_eng"),
+                                        o.getString("price")
                                         /*
                                         o.getString("name_est"),
                                         o.getString("price"),
                                         o.getString("name-eng")
                                         */
                                 );
+                                listItems.add(item);
                             }
 
                             adapter = new MyAdapter(listItems, getApplicationContext()); // Makes an instance of the adapter with the list of items above
