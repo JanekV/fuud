@@ -24,7 +24,7 @@ public class DailyMain {
 
     }
 
-    public String downloadMenus() throws IOException {
+    public static String downloadMenus() throws IOException {
         if (new DailyDownloader(KEEMIA_LINK, "keemia").download()
                 && new DailyDownloader(IT_MAJA_LINK, "it_maja").download()
                 && new DailyDownloader(PEAMAJA_LINK, "peamaja").download()
