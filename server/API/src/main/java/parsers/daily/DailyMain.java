@@ -1,5 +1,9 @@
 package parsers.daily;
 
+import parsers.duplicatehunter.DuplicateHunter;
+import parsers.fooditem.FoodItem;
+import parsers.fooditem.FoodItemBuilder;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -24,7 +28,7 @@ public class DailyMain {
 
     }
 
-    public void downloadMenus() {
+    public static void downloadMenus() {
         try {
             new DailyDownloader(KEEMIA_LINK, "keemia").download();
             new DailyDownloader(IT_MAJA_LINK, "it_maja").download();
@@ -36,8 +40,13 @@ public class DailyMain {
         }
     }
 
-    public static List<Map<String, String>> getMenuData() throws IOException {
-        List<Map<String, String>> menuData = new LinkedList<>();
+    /**
+     * Method for getting the FoodItem list for the Daily chain.
+     * @return  List of food items belonging to the Daily chain.
+     * @throws IOException when the file(s) cannot be found.
+     */
+    public static List<FoodItem> getMenuData() throws IOException {
+        List<FoodItem> menuData = new LinkedList<>();
 
         DailyReader itMajaReader = new DailyReader(new File(IT_MAJA_PDF));
         DailyReader keemiaReader = new DailyReader(new File(KEEMIA_PDF));
@@ -59,6 +68,6 @@ public class DailyMain {
         menuData.addAll(peamajaParser.getFinalMenu());
         menuData.addAll(neljasKorpusParser.getFinalMenu());
 
-        return menuData;
+        return new DuplicateHunter().noDuplicates(menuData);
     }
 }
