@@ -22,9 +22,9 @@ public class DailyDownloader {
 
     /**
      * Method for downloading the menus.
-     * @throws IOException description.
+     * @throws IOException when the file cannot be downloaded.
      */
-    boolean download() throws IOException {
+    void download() throws IOException {
         URL url = new URL(link);
         InputStream in = url.openStream();
         //Directory where the menu pdf files will be saved.
@@ -39,7 +39,5 @@ public class DailyDownloader {
         }
         fos.close();
         in.close();
-
-        return true;
     }
 }
