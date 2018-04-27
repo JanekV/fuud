@@ -2,10 +2,8 @@ package service;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import parsers.bitstop.BitStopParser;
-import parsers.daily.DailyDownloader;
 import parsers.daily.DailyMain;
 
 import java.io.IOException;
@@ -27,7 +25,6 @@ public class ResponseController {
     @GetMapping("/daily")
     public FoodData daily() {
         try {
-            DailyMain.downloadMenus();
             return new FoodData(DailyMain.getMenuData());
         } catch (IOException e) {
             e.printStackTrace();
