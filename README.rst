@@ -26,19 +26,19 @@ Funktsionaalsus
     - BitStop
     - Drumsticks?
     
-Üldine struktuur kuidas java programmid väljastavad andmeid:
-ArrayList<HashMap>
-[    
-    {
-    provider="söögikoht";
-    name_est="toidu nimi";
-    name_eng="nimi inglise keeles";
-    price= "hind";
-    },
-    {
-    ...
-    }
-]
+Üldine struktuur kuidas java programmid väljastavad andmeid::
+
+    [
+        {
+            name_est="toidu nimi",
+            name_eng="nimi inglise keeles",
+            price= "hind",
+            provider= ["söögikoht1", "söögikoht", ... ]
+        },
+        {
+            ...
+        }
+    ]
 
 **Rakendus**
 
