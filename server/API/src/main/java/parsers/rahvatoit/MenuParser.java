@@ -1,9 +1,9 @@
 package parsers.rahvatoit;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import parsers.fooditem.FoodItem;
+import parsers.fooditem.FoodItemBuilder;
+
+import java.util.*;
 import java.util.stream.Stream;
 
 public class MenuParser {
@@ -15,19 +15,24 @@ public class MenuParser {
         this.establishment = establishment;
     }
 
-    public List<Map<String, String>> getMenu() {
-        List<Map<String, String>> finalMenu = new LinkedList<>();
+    public List<FoodItem> getMenu() {
+        System.out.println(menuToBeParsed);
+        System.out.println(establishment);
+        List<FoodItem> finalMenu = new LinkedList<>();
         List<String> noEmpties = new LinkedList<>();
         Stream.of(menuToBeParsed.split("\\r?\\n"))
                 .filter(line -> !line.equals("")
-                        && line.endsWith("€"))
+                        && (line.endsWith("-")
+                        || line.endsWith("0")
+                        || line.endsWith("5")))
                 .forEach(noEmpties::add);
         for (String line : noEmpties) {
-            Map<String, String> menuItem = new HashMap<>();
-            menuItem.put("provider", "rahvatoit_" + establishment);
-            menuItem.put("price", line.substring(line.lastIndexOf(" ")));
-            menuItem.put("name_est", line.substring(0, line.lastIndexOf("/") - 1).trim());
-            menuItem.put("name_eng", line.substring(line.lastIndexOf("/") + 1, line.lastIndexOf(" ")).trim());
+            FoodItem menuItem = new FoodItemBuilder()
+                    .name_est(line.substring(0, line.lastIndexOf("/") - 1).trim())
+                    .name_eng(line.substring(line.lastIndexOf("/") + 1, line.lastIndexOf(" ")).trim())
+                    .price(line.substring(line.lastIndexOf(" ")))
+                    .providers(Collections.singletonList("rahvatoit_" + establishment))
+                    .createFoodItem();
             finalMenu.add(menuItem);
         }
         return finalMenu;

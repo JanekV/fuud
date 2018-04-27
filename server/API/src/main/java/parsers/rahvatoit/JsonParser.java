@@ -19,6 +19,7 @@ public class JsonParser {
         socMenu = socData.get("message").toString();
         raamatukoguMenu = raamatukoguData.get("message").toString();
     }
+
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
