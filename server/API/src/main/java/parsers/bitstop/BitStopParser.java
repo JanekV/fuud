@@ -13,6 +13,8 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import parsers.fooditem.FoodItem;
+import parsers.fooditem.FoodItemBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,7 +118,7 @@ public class BitStopParser {
      * @return List of HashMaps
      * @throws IOException Failed to open Google Sheet
      */
-    public static List<Map<String, String>> getBitStopDataList() throws IOException {
+    public static List<FoodItem> getBitStopDataList() throws IOException {
         List<List<Object>> values = getSheetValues();
 
         if (values == null || values.size() == 0) {
@@ -156,8 +158,8 @@ public class BitStopParser {
      * @param values values from bitStop Google Sheet
      * @return list of HashMaps
      */
-    private static List<Map<String, String>> parseValuesList(List<List<Object>> values) {
-        List<Map<String, String>> result = new ArrayList<>();
+    private static List<FoodItem> parseValuesList(List<List<Object>> values) {
+        List<FoodItem> result = new ArrayList<>();
         List tempBigPortionRow = null;
         boolean isHalfPortion = false;
 
@@ -169,10 +171,10 @@ public class BitStopParser {
                         isHalfPortion = true;
                         tempBigPortionRow = row;
                     } else {
-                        result.add(getRowAsHashMap(row));
+                        result.add(getRowAsFoodItem(row));
                     }
                 } else {
-                    result.add(getRowAsHashMap(tempBigPortionRow, row.get(1).toString()));
+                    result.add(getRowAsFoodItem(tempBigPortionRow, row.get(1).toString()));
                     isHalfPortion = false;
                 }
             }
@@ -190,22 +192,22 @@ public class BitStopParser {
      * @param smallPortionPrice big portion row
      * @return HashMap
      */
-    private static Map<String, String> getRowAsHashMap(List row, String smallPortionPrice) {
-        Map<String, String> result = new HashMap<>();
-        result.put("provider", "bitstop");
-        result.put("name_est", row.get(0).toString().split("/")[0].trim());
-        result.put("name_eng", row.get(2).toString().split("/")[0].trim());
-        result.put("price", String.format("/large %s, /small %s", row.get(1).toString().substring(1),
-                smallPortionPrice.substring(1)));
-        return result;
+    private static FoodItem getRowAsFoodItem(List row, String smallPortionPrice) {
+        return new FoodItemBuilder()
+                .name_est(row.get(0).toString().split("/")[0].trim())
+                .name_eng(row.get(2).toString().split("/")[0].trim())
+                .price(String.format("/large %s, /small %s", row.get(1).toString().substring(1),
+                        smallPortionPrice.substring(1)))
+                .providers(Collections.singletonList("bitstop"))
+                .createFoodItem();
     }
 
-    private static Map<String, String> getRowAsHashMap(List row) {
-        Map<String, String> result = new HashMap<>();
-        result.put("provider", "bitstop");
-        result.put("name_est", row.get(0).toString().trim());
-        result.put("name_eng", row.get(2).toString().trim());
-        result.put("price", row.get(1).toString().substring(1));
-        return result;
+    private static FoodItem getRowAsFoodItem(List row) {
+        return new FoodItemBuilder()
+                .name_est(row.get(0).toString().trim())
+                .name_eng(row.get(2).toString().trim())
+                .price(row.get(1).toString().substring(1))
+                .providers(Collections.singletonList("bitstop"))
+                .createFoodItem();
     }
 }
