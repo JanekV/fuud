@@ -2,7 +2,6 @@ package service;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import parsers.bitstop.BitStopParser;
 import parsers.daily.DailyMain;
@@ -14,9 +13,9 @@ import java.io.IOException;
 public class ResponseController {
 
     @GetMapping("/bitstop")
-    public FoodData bitstop() {
+    public FoodItemList bitstop() {
         try {
-            return new FoodData(BitStopParser.getBitStopDataList());
+            return new FoodItemList(BitStopParser.getBitStopDataList());
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -24,9 +23,9 @@ public class ResponseController {
     }
 
     @GetMapping("/daily")
-    public FoodData daily() {
+    public FoodItemList daily() {
         try {
-            return new FoodData(DailyMain.getMenuData());
+            return new FoodItemList(DailyMain.getMenuData());
         } catch (IOException e) {
             e.printStackTrace();
             return null;

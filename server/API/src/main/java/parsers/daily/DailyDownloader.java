@@ -28,7 +28,7 @@ public class DailyDownloader {
         URL url = new URL(link);
         InputStream in = url.openStream();
         //Directory where the menu pdf files will be saved.
-        String save = "C:/file/" + establishment.trim() + ".pdf";
+        String save = "./file/" + establishment.trim() + ".pdf";
         FileOutputStream fos = new FileOutputStream(new File(save));
 
         int length;
