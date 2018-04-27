@@ -113,9 +113,9 @@ public class BitStopParser {
     }
 
     /**
-     * Returns food items form the bitStop Google Sheet in the correct format.
+     * Returns food items form the bitStop Google Sheet as FoodItem objects.
      *
-     * @return List of HashMaps
+     * @return List of FoodItems
      * @throws IOException Failed to open Google Sheet
      */
     public static List<FoodItem> getBitStopDataList() throws IOException {
@@ -143,20 +143,20 @@ public class BitStopParser {
     }
 
     /**
-     * Return a List of HashMaps that follow the structure:
+     * Return a List of FoodItems that follow the structure:
      * [
-     *    provider: "provider name"
      *    food_name_est: "string"
      *    food_name_eng: "string"
      *    price (single size): "string" (later parsed as float)
      *    price (multiple sizes): "/big(string), /small(string)"
+     *    provider: ["string", "string", ...]
      *  ]
      *  [
      *   ...
      *  ]
      *
      * @param values values from bitStop Google Sheet
-     * @return list of HashMaps
+     * @return list of FoodItems
      */
     private static List<FoodItem> parseValuesList(List<List<Object>> values) {
         List<FoodItem> result = new ArrayList<>();
@@ -188,7 +188,7 @@ public class BitStopParser {
      * is added to the name column in given row. This method gets the small portion price form the method
      * ParseValuesList (see above).
      *
-     * @param row row to be converted to hashmap
+     * @param row row to be converted to FoodItem
      * @param smallPortionPrice big portion row
      * @return HashMap
      */
