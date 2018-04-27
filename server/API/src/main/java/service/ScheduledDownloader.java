@@ -9,7 +9,7 @@ import java.io.IOException;
 @Component
 public class ScheduledDownloader {
 
-    @Scheduled(cron = "0 7 * 1-6,8-12 1-5")
+    @Scheduled(cron = "0 0 7 * 1-6,8-12 1-5")
     public void downloadDailyMenus() {
         try {
             DailyMain.downloadMenus();
