@@ -24,14 +24,15 @@ public class DailyMain {
 
     }
 
-    public String downloadMenus() throws IOException {
-        if (new DailyDownloader(KEEMIA_LINK, "keemia").download()
-                && new DailyDownloader(IT_MAJA_LINK, "it_maja").download()
-                && new DailyDownloader(PEAMAJA_LINK, "peamaja").download()
-                && new DailyDownloader(NELJAS_KORPUS_LINK, "neljas_korpus").download()) {
-            return "Files downloaded!";
-        } else {
-            return "Error, please investigate";
+    public void downloadMenus() {
+        try {
+            new DailyDownloader(KEEMIA_LINK, "keemia").download();
+            new DailyDownloader(IT_MAJA_LINK, "it_maja").download();
+            new DailyDownloader(PEAMAJA_LINK, "peamaja").download();
+            new DailyDownloader(NELJAS_KORPUS_LINK, "neljas_korpus").download();
+        } catch (IOException ioe) {
+            System.out.println("Download error.");
+            ioe.printStackTrace();
         }
     }
 
