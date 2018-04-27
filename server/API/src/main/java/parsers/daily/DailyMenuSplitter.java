@@ -42,7 +42,7 @@ public class DailyMenuSplitter {
     }
 
     /**
-     * Method for retreiving a section of the menu based on indexes.
+     * Method for retrieving a section of the menu based on indexes.
      * @param menuAsList menu to be split.
      * @param from starting index.
      * @param to end index.

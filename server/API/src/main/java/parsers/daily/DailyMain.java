@@ -10,10 +10,10 @@ public class DailyMain {
     private static final String PEAMAJA_LINK = "http://www.daily.ee/files/dn_daily_nadalamenuu_ttu_peahoone.pdf";
     private static final String NELJAS_KORPUS_LINK = "http://www.daily.ee/files/dn_daily_nadalamenuu_ttu_4_korpus.pdf";
 
-    private static final String IT_MAJA_PDF = "C:/file/it_maja.pdf";
-    private static final String KEEMIA_PDF = "C:/file/keemia.pdf";
-    private static final String PEAMAJA_PDF = "C:/file/peamaja.pdf";
-    private static final String NELJAS_KORPUS_PDF = "C:/file/neljas_korpus.pdf";
+    private static final String IT_MAJA_PDF = "./file/it_maja.pdf";
+    private static final String KEEMIA_PDF = "./file/keemia.pdf";
+    private static final String PEAMAJA_PDF = "./file/peamaja.pdf";
+    private static final String NELJAS_KORPUS_PDF = "./file/neljas_korpus.pdf";
 
     private static final String IT_MAJA = "it_maja";
     private static final String KEEMIA = "keemia";
@@ -24,7 +24,7 @@ public class DailyMain {
 
     }
 
-    public String downloadMenus() throws IOException {
+    public static String downloadMenus() throws IOException {
         if (new DailyDownloader(KEEMIA_LINK, "keemia").download()
                 && new DailyDownloader(IT_MAJA_LINK, "it_maja").download()
                 && new DailyDownloader(PEAMAJA_LINK, "peamaja").download()
