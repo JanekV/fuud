@@ -1,12 +1,15 @@
 package parsers.daily;
 
-import java.util.HashMap;
+import parsers.fooditem.FoodItem;
+import parsers.fooditem.FoodItemBuilder;
+
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class DailyParser {
-    private List<Map<String, String>> finalMenu;
+    private List<FoodItem> finalMenu;
     private List<String> menuToBeParsed;
 
     /**
@@ -23,7 +26,7 @@ public class DailyParser {
      * Getter method for receiving the menu as a linked list of hashmaps.
      * @return menu as a linked list of hashmaps.
      */
-    List<Map<String, String>> getFinalMenu() {
+    List<FoodItem> getFinalMenu() {
         return finalMenu;
     }
 
@@ -43,13 +46,14 @@ public class DailyParser {
         if (checkIfOpen()) {
             //For loop converts every menu item into a hashmap, inserts them into a linked list.
             for (int i = 0; i < menuToBeParsed.size(); i += 2) {
-                Map<String, String> menuItem = new HashMap<>();
                 String nameWithPrice = menuToBeParsed.get(i);
                 Integer priceBeginIndex = nameWithPrice.length() - 4;
-                menuItem.put("provider", "daily_" + facility);
-                menuItem.put("name_est", nameWithPrice.substring(0, priceBeginIndex).trim());
-                menuItem.put("price", nameWithPrice.substring(priceBeginIndex));
-                menuItem.put("name_eng", menuToBeParsed.get(i + 1).trim());
+                FoodItem menuItem = new FoodItemBuilder()
+                        .name_est(nameWithPrice.substring(0, priceBeginIndex).trim())
+                        .name_eng(menuToBeParsed.get(i + 1).trim())
+                        .price(nameWithPrice.substring(priceBeginIndex).trim())
+                        .providers(Collections.singletonList("daily_" + facility))
+                        .createFoodItem();
                 finalMenu.add(menuItem);
             }
         }
