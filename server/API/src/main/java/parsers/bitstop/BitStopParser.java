@@ -22,8 +22,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class BitStopParser {
-    private static Calendar calendar = Calendar.getInstance();
-
     private static final String BITSTOP_SPREADSHEET_ID = "1EWuafdBZjeBNwSNfluILEpT8JamxiPls9aBthYOY5UY";
 
 
@@ -123,7 +121,7 @@ public class BitStopParser {
     public static List<FoodItem> getBitStopDataList() throws IOException {
         List<List<Object>> values = getSheetValues();
 
-        if (values == null || values.size() == 0 || !isOpen()) {
+        if (!isOpen() || values == null || values.size() == 0) {
             return Collections.emptyList();
         } else {
             return parseValuesList(values);
@@ -213,6 +211,7 @@ public class BitStopParser {
     }
 
     private static boolean isOpen() {
+        Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.HOUR_OF_DAY) <= 16 && calendar.get(Calendar.HOUR_OF_DAY) >= 9
                 && calendar.get(Calendar.DAY_OF_WEEK) < 6;
     }
