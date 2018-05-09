@@ -33,8 +33,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ListItem listItem = listItems.get(position);
 
-        holder.textViewHead.setText(listItem.getHead());
-        holder.textViewDesc.setText(listItem.getDesc());
+        holder.textViewProvider.setText(listItem.getProvider());
+        holder.textViewPrice.setText(listItem.getPrice());
+        holder.textViewNameEst.setText(listItem.getName_est());
+        holder.textViewNameEng.setText(listItem.getName_eng());
     }
 
     @Override
@@ -44,14 +46,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textViewHead;
-        public TextView textViewDesc;
+        public TextView textViewProvider;
+        public TextView textViewPrice;
+        public TextView textViewNameEst;
+        public TextView textViewNameEng;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            textViewHead = (TextView) itemView.findViewById(R.id.textViewHead);
-            textViewDesc = (TextView) itemView.findViewById(R.id.textViewDesc);
+            textViewProvider = (TextView) itemView.findViewById(R.id.textViewProvider);
+            textViewPrice = (TextView) itemView.findViewById(R.id.textViewPrice);
+            textViewNameEng = (TextView) itemView.findViewById(R.id.textViewNameEng);
+            textViewNameEst = (TextView) itemView.findViewById(R.id.textViewNameEst);
         }
     }
 }

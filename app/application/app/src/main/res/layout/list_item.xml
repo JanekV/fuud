@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:layout_margin="@dimen/cardview_compat_inset_shadow"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/cardview_compat_inset_shadow">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="383dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="@dimen/cardview_compat_inset_shadow">
 
             <TextView
-                android:id="@+id/textViewHead"
+                android:id="@+id/textViewProvider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Heading"
+                android:text="Provider"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
             <TextView
-                android:id="@+id/textViewDesc"
+                android:id="@+id/textViewPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description" />
+                android:text="Price"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/textViewNameEng"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="NameEng" />
+
+            <TextView
+                android:id="@+id/textViewNameEst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NameEst" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

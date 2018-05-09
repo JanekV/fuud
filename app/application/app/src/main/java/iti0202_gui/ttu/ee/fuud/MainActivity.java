@@ -1,6 +1,7 @@
 package iti0202_gui.ttu.ee.fuud;
 
 import android.app.ProgressDialog;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +25,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String BITSTOP_DATA = "http://192.168.43.210:8080/bitstop";
+    public static final String BITSTOP_DATA = "https://api.fuud.ituk.ee/bitstop";
+    public static final String DAILY_DATA = "https://api.fuud.ituk.ee/daily";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
@@ -44,17 +46,32 @@ public class MainActivity extends AppCompatActivity {
         // Where items go to the list
         loadRecyclerViewData();
 
-
-
     }
 
     private void loadRecyclerViewData() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loadning data...");
+        progressDialog.setMessage("Loading data...");
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                BITSTOP_DATA,
+
+        StringRequest stringRequestBitstop = getStringRequest(progressDialog, BITSTOP_DATA);
+        progressDialog.show();
+
+        StringRequest stringRequestDaily = getStringRequest(progressDialog, DAILY_DATA);
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequestBitstop);
+        requestQueue.add(stringRequestDaily);
+
+        adapter = new MyAdapter(listItems, getApplicationContext());    // Makes an instance of the adapter with the list of items above
+        recyclerView.setAdapter(adapter);
+    }
+
+    @NonNull
+    private StringRequest getStringRequest(final ProgressDialog progressDialog, String URL) {
+        return new StringRequest(Request.Method.GET,
+                URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -65,20 +82,13 @@ public class MainActivity extends AppCompatActivity {
                             for (int i = 0; i < array.length(); i++) { // for each item (meal)
                                 JSONObject o = array.getJSONObject(i);
                                 ListItem item = new ListItem(           // get data about the meal
-                                        o.getString("name_eng"),
-                                        o.getString("price")
-                                        /*
-                                        o.getString("name_est"),
+                                        o.getString("providers"),
                                         o.getString("price"),
-                                        o.getString("name-eng")
-                                        */
+                                        o.getString("name_eng"),
+                                        o.getString("name_est")
                                 );
                                 listItems.add(item);
                             }
-
-                            adapter = new MyAdapter(listItems, getApplicationContext()); // Makes an instance of the adapter with the list of items above
-                            recyclerView.setAdapter(adapter);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -91,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
     }
 
 
