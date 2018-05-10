@@ -33,7 +33,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ListItem listItem = listItems.get(position);
 
-        holder.textViewProvider.setText(listItem.getProvider());
+        holder.textViewProvider.setText(listItem.getProviders());
         holder.textViewPrice.setText(listItem.getPrice());
         holder.textViewNameEst.setText(listItem.getName_est());
         holder.textViewNameEng.setText(listItem.getName_eng());

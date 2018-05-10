@@ -43,8 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
         listItems = new ArrayList<>();
 
+        adapter = new MyAdapter(listItems, getApplicationContext());    // Makes an instance of the adapter with the list of items above
+        recyclerView.setAdapter(adapter);
+
         // Where items go to the list
         loadRecyclerViewData();
+
 
     }
 
@@ -64,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequestBitstop);
         requestQueue.add(stringRequestDaily);
 
-        adapter = new MyAdapter(listItems, getApplicationContext());    // Makes an instance of the adapter with the list of items above
-        recyclerView.setAdapter(adapter);
+
     }
 
     @NonNull
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray array = jsonObject.getJSONArray("data");
+                            System.out.println(array.toString());
                             for (int i = 0; i < array.length(); i++) { // for each item (meal)
                                 JSONObject o = array.getJSONObject(i);
                                 ListItem item = new ListItem(           // get data about the meal
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                         o.getString("name_est")
                                 );
                                 listItems.add(item);
+                                adapter.notifyDataSetChanged();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
