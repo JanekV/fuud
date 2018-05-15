@@ -79,23 +79,26 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.show();
 
 
-        StringRequest stringRequestBitstop = getStringRequest(progressDialog, BITSTOP_DATA);
-        progressDialog.show();
+        StringRequest stringRequestBitstop = getStringRequest(BITSTOP_DATA);
+        StringRequest stringRequestDaily = getStringRequest(DAILY_DATA);
 
-        StringRequest stringRequestDaily = getStringRequest(progressDialog, DAILY_DATA);
+        progressDialog.dismiss();
+
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequestBitstop);
         requestQueue.add(stringRequestDaily);
+
+
     }
 
     @NonNull
-    private StringRequest getStringRequest(final ProgressDialog progressDialog, String URL) {
+    private StringRequest getStringRequest(String URL) {
         return new StringRequest(Request.Method.GET,
                 URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-                        progressDialog.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray array = jsonObject.getJSONArray("data");
@@ -119,13 +122,10 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
-
-
 
 
 }
