@@ -2,10 +2,12 @@ package iti0202_gui.ttu.ee.fuud;
 
 import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,15 +31,19 @@ public class MainActivity extends AppCompatActivity {
     public static final String DAILY_DATA = "https://api.fuud.ituk.ee/daily";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private List<ListItem> listItems;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
+
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true); // Each card item is the same size
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -49,7 +55,22 @@ public class MainActivity extends AppCompatActivity {
         // Where items go to the list
         loadRecyclerViewData();
 
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        listItems = new ArrayList<>();
 
+                        adapter = new MyAdapter(listItems, getApplicationContext());    // Makes an instance of the adapter with the list of items above
+                        recyclerView.setAdapter(adapter);
+
+                        // Where items go to the list
+                        loadRecyclerViewData();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
     }
 
     private void loadRecyclerViewData() {
@@ -62,13 +83,9 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.show();
 
         StringRequest stringRequestDaily = getStringRequest(progressDialog, DAILY_DATA);
-
-
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequestBitstop);
         requestQueue.add(stringRequestDaily);
-
-
     }
 
     @NonNull
@@ -107,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 
 
 }

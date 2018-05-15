@@ -15,7 +15,7 @@ public class ListItem {
                 .replaceAll(" daily", "");
         this.name_est = name_est;
         this.name_eng = name_eng;
-        this.price = price;
+        this.price = price + '€';
     }
 
     public String getProviders() {
