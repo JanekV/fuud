@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 StringRequest stringRequestBitstop = getStringRequest(BITSTOP_DATA);
                 requestQueue.add(stringRequestBitstop);
             default:
-
         }
 
         progressDialog.dismiss();
