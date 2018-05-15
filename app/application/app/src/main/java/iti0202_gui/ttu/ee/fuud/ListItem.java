@@ -1,6 +1,8 @@
 package iti0202_gui.ttu.ee.fuud;
 
-public class ListItem {
+import android.support.annotation.NonNull;
+
+public class ListItem implements Comparable<ListItem>{
 
     private String providers;
     private String name_est;
@@ -32,5 +34,14 @@ public class ListItem {
 
     public String getPrice() {
         return price;
+    }
+
+    float getPriceAsFloat() {
+        return Float.valueOf(price.replace("€", ""));
+    }
+
+    @Override
+    public int compareTo(@NonNull ListItem o) {
+        return Float.compare(getPriceAsFloat(), o.getPriceAsFloat());
     }
 }

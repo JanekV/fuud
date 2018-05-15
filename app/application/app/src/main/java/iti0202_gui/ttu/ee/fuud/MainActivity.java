@@ -22,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Where items go to the list
+        sortListItemsByPrice();
         loadRecyclerViewData();
 
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
@@ -89,7 +92,39 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequestBitstop);
         requestQueue.add(stringRequestDaily);
 
+    }
 
+    private void filterListItemsByProvider(String provider) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading data...");
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        switch (provider) {
+            case "daily":
+                listItems.clear();
+                StringRequest stringRequestDaily = getStringRequest(DAILY_DATA);
+                requestQueue.add(stringRequestDaily);
+            case "bitstop":
+                listItems.clear();
+                StringRequest stringRequestBitstop = getStringRequest(BITSTOP_DATA);
+                requestQueue.add(stringRequestBitstop);
+            default:
+
+        }
+
+        progressDialog.dismiss();
+
+    }
+
+    private void sortListItemsByPrice() {
+        Collections.sort(listItems, new Comparator<ListItem>() {
+            @Override
+            public int compare(ListItem o1, ListItem o2) {
+                return Float.compare(o1.getPriceAsFloat(), o2.getPriceAsFloat());
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 
     @NonNull
