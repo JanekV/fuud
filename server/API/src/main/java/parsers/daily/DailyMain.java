@@ -71,10 +71,4 @@ public class DailyMain {
 
         return new DuplicateHunter().noDuplicates(menuData);
     }
-
-    public static void main(String[] args) throws IOException {
-        downloadMenus();
-
-        System.out.println(getMenuData());
-    }
 }
