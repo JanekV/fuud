@@ -12,11 +12,13 @@ import parsers.fooditem.FoodItem;
 public class Rahvatoit {
     private static final String SOC = "soc";
     private static final String RAAMATUKOGU= "raamatukogu";
+    private static final String URL_BASE = "https://graph.facebook.com/v2.12/rahvatoitttu/posts?access_token=";
+    private static final String ACCESS_TOKEN = "EAACEdEose0cBAH69PiZAEyq8NwgEayxXK3Gl6oQ23nNgJFlvHgUnZB1FlGkkxQCMy7u0izVLKT6ilVpTDcZALfxXchYkwyWsp1kwuhPSEtqZBfBTOqcsBkOz69ILKynUw1LMKA9INleIZALbvI3ZBNQgNrQPtFfHi3OPSZAOb3rL0352BtZCpwUFPzDqBh60RDoZD";
 
     public static List<FoodItem> parseRahvatoit() throws IOException, JSONException {
 
         // NB! THE ACCESS TOKEN IS CURRENTLY NOT WORKING! PARSING IS IMPOSSIBLE AS LONG AS THE ACCESS TOKEN IS NOT WORKING!
-        JsonParser jsonParser = new JsonParser("https://graph.facebook.com/v2.12/rahvatoitttu/posts?access_token=EAACEdEose0cBAH69PiZAEyq8NwgEayxXK3Gl6oQ23nNgJFlvHgUnZB1FlGkkxQCMy7u0izVLKT6ilVpTDcZALfxXchYkwyWsp1kwuhPSEtqZBfBTOqcsBkOz69ILKynUw1LMKA9INleIZALbvI3ZBNQgNrQPtFfHi3OPSZAOb3rL0352BtZCpwUFPzDqBh60RDoZD");
+        JsonParser jsonParser = new JsonParser(URL_BASE + ACCESS_TOKEN);
 
         MenuParser socParser = new MenuParser(jsonParser.getSocMenu(), SOC);
         MenuParser raamatukoguParser = new MenuParser(jsonParser.getRaamatukoguMenu(), RAAMATUKOGU);
