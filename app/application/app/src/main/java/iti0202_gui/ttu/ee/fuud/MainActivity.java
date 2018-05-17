@@ -1,6 +1,7 @@
 package iti0202_gui.ttu.ee.fuud;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String BITSTOP_DATA = "https://api.fuud.ituk.ee/bitstop";
     public static final String DAILY_DATA = "https://api.fuud.ituk.ee/daily";
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private MyAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private SearchView searchView;
 
     private List<ListItem> listItems;
 
@@ -49,15 +52,30 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true); // Each card item is the same size
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        searchView = (SearchView) findViewById(R.id.searchView);
+
         listItems = new ArrayList<>();
 
         adapter = new MyAdapter(listItems, getApplicationContext());    // Makes an instance of the adapter with the list of items above
         recyclerView.setAdapter(adapter);
 
         // Where items go to the list
-        sortListItemsByPrice();
         loadRecyclerViewData();
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        /*
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -74,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+        */
     }
 
     private void loadRecyclerViewData() {
@@ -94,37 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void filterListItemsByProvider(String provider) {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading data...");
-        progressDialog.show();
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        switch (provider) {
-            case "daily":
-                listItems.clear();
-                StringRequest stringRequestDaily = getStringRequest(DAILY_DATA);
-                requestQueue.add(stringRequestDaily);
-            case "bitstop":
-                listItems.clear();
-                StringRequest stringRequestBitstop = getStringRequest(BITSTOP_DATA);
-                requestQueue.add(stringRequestBitstop);
-            default:
-        }
-
-        progressDialog.dismiss();
-
-    }
-
-    private void sortListItemsByPrice() {
-        Collections.sort(listItems, new Comparator<ListItem>() {
-            @Override
-            public int compare(ListItem o1, ListItem o2) {
-                return Float.compare(o1.getPriceAsFloat(), o2.getPriceAsFloat());
-            }
-        });
-        adapter.notifyDataSetChanged();
-    }
 
     @NonNull
     private StringRequest getStringRequest(String URL) {
