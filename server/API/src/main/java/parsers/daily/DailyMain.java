@@ -9,12 +9,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class DailyMain {
-    private static final String KEEMIA_LINK = "http://www.daily.lv/download/?f=dn_daily_nadalamenuu_ttu_keemiainstituut_(002).pdf";
-    //private static final String KEEMIA_LINK = "http://www.daily.lv/download/?f=copy_of_dn_daily_nadalamenuu_ttu_keemiainstituut.pdf";
-    private static final String IT_MAJA_LINK = "http://www.daily.lv/download/?f=copy_of_dn_daily_nadalamenuu_ttu_it_maja.pdf";
-    private static final String PEAMAJA_LINK = "http://www.daily.lv/download/?f=copy_of_dn_daily_nadalamenuu_ttu_peahoone.pdf";
-    private static final String NELJAS_KORPUS_LINK = "http://www.daily.lv/download/?f=copy_of_dn_daily_nadalamenuu_ttu_4_korpus.pdf";
-
     private static final String IT_MAJA_PDF = "./file/it_maja.pdf";
     private static final String KEEMIA_PDF = "./file/keemia.pdf";
     private static final String PEAMAJA_PDF = "./file/peamaja.pdf";
@@ -31,10 +25,11 @@ public class DailyMain {
 
     public static void downloadMenus() {
         try {
-            new DailyDownloader(KEEMIA_LINK, "keemia").download();
-            new DailyDownloader(IT_MAJA_LINK, "it_maja").download();
-            new DailyDownloader(PEAMAJA_LINK, "peamaja").download();
-            new DailyDownloader(NELJAS_KORPUS_LINK, "neljas_korpus").download();
+            LinkFetcher fetcher = new LinkFetcher();
+            new DailyDownloader(fetcher.getKeemia(), "keemia").download();
+            new DailyDownloader(fetcher.getItMaja(), "it_maja").download();
+            new DailyDownloader(fetcher.getPeamaja(), "peamaja").download();
+            new DailyDownloader(fetcher.getNeljasKorpus(), "neljas_korpus").download();
         } catch (IOException ioe) {
             System.out.println("Download error.");
             ioe.printStackTrace();
@@ -70,5 +65,10 @@ public class DailyMain {
         menuData.addAll(neljasKorpusParser.getFinalMenu());
 
         return new DuplicateHunter().noDuplicates(menuData);
+    }
+
+    public static void main(String[] args) throws IOException {
+        downloadMenus();
+        System.out.println(getMenuData());
     }
 }
