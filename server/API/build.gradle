@@ -36,5 +36,6 @@ dependencies {
     compile 'org.apache.pdfbox:pdfbox:2.0.9'
     compile 'com.restfb:restfb:1.6.9'
     compile 'org.json:json:20090211'
+    compile 'org.jsoup:jsoup:1.11.3'
 }
 
