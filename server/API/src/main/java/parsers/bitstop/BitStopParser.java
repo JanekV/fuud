@@ -19,7 +19,9 @@ import parsers.fooditem.FoodItemBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class BitStopParser {
     private static final String BITSTOP_SPREADSHEET_ID = "1EWuafdBZjeBNwSNfluILEpT8JamxiPls9aBthYOY5UY";
@@ -145,15 +147,15 @@ public class BitStopParser {
     /**
      * Return a List of FoodItems that follow the structure:
      * [
-     *    food_name_est: "string"
-     *    food_name_eng: "string"
-     *    price (single size): "string" (later parsed as float)
-     *    price (multiple sizes): "/big(string), /small(string)"
-     *    provider: ["string", "string", ...]
-     *  ]
-     *  [
-     *   ...
-     *  ]
+     * food_name_est: "string"
+     * food_name_eng: "string"
+     * price (single size): "string" (later parsed as float)
+     * price (multiple sizes): "/big(string), /small(string)"
+     * provider: ["string", "string", ...]
+     * ]
+     * [
+     * ...
+     * ]
      *
      * @param values values from bitStop Google Sheet
      * @return list of FoodItems
@@ -170,11 +172,12 @@ public class BitStopParser {
                     if (row.get(0).toString().contains("/")) {
                         isHalfPortion = true;
                         tempBigPortionRow = row;
+                        result.add(getRowAsBigPortionFoodItem(row));
                     } else {
                         result.add(getRowAsFoodItem(row));
                     }
                 } else {
-                    result.add(getRowAsFoodItem(tempBigPortionRow, row.get(1).toString()));
+                    result.add(getRowAsSmallPortionFoodItem(tempBigPortionRow, row.get(1).toString()));
                     isHalfPortion = false;
                 }
             }
@@ -182,22 +185,20 @@ public class BitStopParser {
         return result;
     }
 
-
-    /**
-     * Alternative parser for small/big portion functionality. If a portion is big or small, "/väike" or "/small"
-     * is added to the name column in given row. This method gets the small portion price form the method
-     * ParseValuesList (see above).
-     *
-     * @param row row to be converted to FoodItem
-     * @param smallPortionPrice big portion row
-     * @return HashMap
-     */
-    private static FoodItem getRowAsFoodItem(List row, String smallPortionPrice) {
+    private static FoodItem getRowAsBigPortionFoodItem(List row) {
         return new FoodItemBuilder()
-                .name_est(row.get(0).toString().split("/")[0].trim())
-                .name_eng(row.get(2).toString().split("/")[0].trim())
-                .price(String.format("/large %s, /small %s", row.get(1).toString().substring(1),
-                        smallPortionPrice.substring(1)))
+                .name_est(row.get(0).toString().split("/")[0].trim() + " (suur)")
+                .name_eng(row.get(2).toString().split("/")[0].trim() + " (large)")
+                .price(row.get(1).toString().substring(1))
+                .providers(Collections.singletonList("bitstop"))
+                .createFoodItem();
+    }
+
+    private static FoodItem getRowAsSmallPortionFoodItem(List row, String smallPortionPrice) {
+        return new FoodItemBuilder()
+                .name_est(row.get(0).toString().split("/")[0].trim() + " (väike)")
+                .name_eng(row.get(2).toString().split("/")[0].trim() + " (small)")
+                .price(smallPortionPrice.substring(1))
                 .providers(Collections.singletonList("bitstop"))
                 .createFoodItem();
     }
