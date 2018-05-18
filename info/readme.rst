@@ -1,4 +1,10 @@
 fuud?
 ========
 
-Kõht koriseb? Kuhu sööma minna? TTÜ söögikohtade päevamenüüsi aitab sul mugavalt ühes kohas sirvida **fuud?** !
+- KÃµht koriseb ning ei tea, kuhu sÃ¶Ã¶ma minna?
+- TTÃœ sÃ¶Ã¶gikohtade pÃ¤evamenÃ¼Ã¼sid aitab sul mugavalt Ã¼hes kohas sirvida Android rakendus **fuud?** !
+
+Installation
+------------
+
+TÃµmba alla .apk fail, luba oma telefonis "Unknown sources" ning installi Ã¤pp!
