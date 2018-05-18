@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        listItems = new ArrayList<>();
+                        listItems.clear();
                         // Where items go to the list
                         loadRecyclerViewData();
                         swipeRefreshLayout.setRefreshing(false);
