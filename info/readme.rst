@@ -7,4 +7,4 @@ fuud?
 Installation
 ------------
 
-Tõmba alla .apk fail, luba oma telefonis "Unknown sources" ning installi äpp!
+Tõmba alla .apk fail, luba oma telefonis "Unknown sources" ning installi äpp! (Vanim lubatud Android versioon: 5.0, Jelly Bean)
