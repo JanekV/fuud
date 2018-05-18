@@ -7,6 +7,8 @@ import parsers.bitstop.BitStopParser;
 import parsers.daily.DailyMain;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -30,5 +32,11 @@ public class ResponseController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @GetMapping("/downloadDailyMenus")
+    public List<String> downloadDailyMenus() {
+        DailyMain.downloadMenus();
+        return Collections.singletonList("Daily data updated.");
     }
 }
