@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        /*
+
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-        */
     }
 
     private void loadRecyclerViewData() {
