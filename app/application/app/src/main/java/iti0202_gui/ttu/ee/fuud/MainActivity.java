@@ -24,8 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -81,17 +79,13 @@ public class MainActivity extends AppCompatActivity {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        listItems = new ArrayList<>();
-
-                        adapter = new MyAdapter(listItems, getApplicationContext());    // Makes an instance of the adapter with the list of items above
-                        recyclerView.setAdapter(adapter);
-
                         // Where items go to the list
                         loadRecyclerViewData();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }
         );
+
     }
 
     private void loadRecyclerViewData() {
