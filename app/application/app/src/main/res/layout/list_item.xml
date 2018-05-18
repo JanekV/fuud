@@ -1,31 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:layout_margin="@dimen/cardview_compat_inset_shadow"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/cardview_compat_inset_shadow"
+        app:cardCornerRadius="10dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="383dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="@dimen/cardview_compat_inset_shadow">
+            android:padding="@dimen/cardview_compat_inset_shadow"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
 
             <TextView
-                android:id="@+id/textViewHead"
+                android:id="@+id/textViewNameEst"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:text="NameEst"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/textViewNameEng"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="3dp"
+                android:paddingLeft="10dp"
+                android:text="NameEng"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Heading"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:text="Price"
+                android:textAlignment="textStart"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
             <TextView
-                android:id="@+id/textViewDesc"
+                android:id="@+id/textViewProvider"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description" />
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:paddingLeft="10dp"
+                android:text="Provider"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
