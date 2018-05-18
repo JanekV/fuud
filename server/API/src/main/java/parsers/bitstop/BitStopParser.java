@@ -215,7 +215,8 @@ public class BitStopParser {
 
     private static boolean isOpen() {
         Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
         return calendar.get(Calendar.HOUR_OF_DAY) <= 16 && calendar.get(Calendar.HOUR_OF_DAY) >= 9
-                && calendar.get(Calendar.DAY_OF_WEEK) < 6;
+                && calendar.get(Calendar.DAY_OF_WEEK) <= 6;
     }
 }
